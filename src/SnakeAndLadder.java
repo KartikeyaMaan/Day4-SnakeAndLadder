@@ -1,7 +1,14 @@
 public class SnakeAndLadder {
-    public static void main(String[] args) {
 
+    public final static int LADDER=1;
+    public final static int SNAKE=2;
+    public static void main(String[] args) {
         int startPos=0;
         int dice=(int)((Math.random()*10)%6+1);
+        int option=(int)((Math.random()*10)%3);
+        switch(option){
+            case LADDER -> startPos+=dice;
+            case SNAKE -> startPos-=dice;
+        }
     }
 }
