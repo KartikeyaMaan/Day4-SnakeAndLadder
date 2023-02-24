@@ -1,41 +1,51 @@
 public class SnakeAndLadder {
 
-    public final static int LADDER = 1;
-    public final static int SNAKE = 2;
+    public static final int LADDER = 1;
+    public static final int SNAKE = 2;
     public static int rollCount = 0;
 
+    //returns a random number between 0 and 5
+    public static int generateRandomNum(){
+        return (int) ((Math.random()*10)%6);
+    }
+
     public static int playGame(int startPos) {
-        boolean repeat = true;
-        while (repeat) {
+        boolean repeat;
+        do {
+            repeat=false;
             rollCount++;
-            int dice = (int) ((Math.random() * 10) % 6 + 1);
-            int option = (int) ((Math.random() * 10) % 3);
+            int dice = generateRandomNum()+1;
+            int option = generateRandomNum()/2;
             switch (option) {
-                case LADDER -> startPos += dice;
+                case LADDER -> {
+                    startPos += dice;
+                    if (startPos > 100)
+                        startPos -= dice;
+                    repeat = true;
+                }
                 case SNAKE -> {
                     startPos -= dice;
-                    repeat = false;
+                    if (startPos < 0)
+                        startPos = 0;
                 }
-                default -> repeat =false;
             }
-            if (startPos < 0)
-                startPos = 0;
-            if (startPos > 100)
-                startPos -= dice;
-        }
+        } while (repeat && startPos!=100);
         return startPos;
     }
 
     public static void main(String[] args) {
         int startPos1 = 0;
         int startPos2 = 0;
-        while (startPos1 != 100 && startPos2 != 100) {
+
+        while (startPos2 != 100) {
             startPos1 = playGame(startPos1);
-            if(startPos1!=100)
-                startPos2 = playGame(startPos2);
+            if (startPos1 == 100)
+                break;
+            startPos2 = playGame(startPos2);
             System.out.println("Player 1 position = " + startPos1);
             System.out.println("Player 2 position = " + startPos2);
         }
+
         if (startPos1 == 100)
             System.out.println("Player 1 wins");
         else
